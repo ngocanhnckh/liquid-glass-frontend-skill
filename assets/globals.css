@@ -1,0 +1,244 @@
+@import "tailwindcss";
+
+/* =====================================================================
+   LIQUID-GLASS FRONTEND — drop-in stylesheet (Tailwind v4)
+   Set the THREE brand triplets below and you've re-skinned everything.
+   Tailwind v3? Move the utilities into `@layer utilities { ... }`.
+   ===================================================================== */
+
+@theme {
+  /* ---- BRAND PALETTE — single source of truth (edit only these) ----
+     Space-separated R G B so they compose at any opacity:
+        rgb(var(--primary) / 0.4) */
+  --primary: 229 77 46;        /* primary accent (e.g. Radix Tomato 9 #E54D2E) */
+  --primary-soft: 240 110 80;  /* lighter tint — hover / glow */
+  --accent: 226 169 91;        /* warm secondary (gold) */
+
+  /* derived brand solids — driven by the triplets, do not hardcode hex */
+  --color-clay: rgb(var(--primary));
+  --color-clay-2: rgb(var(--primary-soft));
+  --color-amber: rgb(var(--accent));
+
+  /* warm neutral system (swap for cool neutrals to change the mood) */
+  --color-obsidian: #15110D;   /* warm near-black */
+  --color-obsidian-2: #1E1813;
+  --color-coal: #2A2219;
+  --color-ivory: #F0ECE1;      /* warm bright background */
+  --color-ivory-2: #E7E0D1;
+  --color-slate: #1C1813;      /* text on light */
+  --color-slate-soft: #6B6052;
+  --color-bone: #F3EEE3;       /* text on dark */
+  --color-bone-soft: #A79C8C;
+  --color-line-dark: rgba(243,238,227,0.12);
+  --color-line-light: rgba(28,24,19,0.14);
+
+  /* fonts — wire these var names to next/font (or @fontsource) */
+  --font-display: var(--font-display), Georgia, serif;
+  --font-body: var(--font-body), ui-sans-serif, system-ui;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+
+  --radius-pill: 999px;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body {
+  background: var(--color-obsidian);
+  color: var(--color-bone);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  font-feature-settings: "ss01", "cv01";
+}
+::selection { background: var(--color-clay); color: var(--color-bone); }
+
+/* optional Lenis smooth-scroll hooks (landing pages) */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+/* ===== grain — analog warmth + hides gradient banding ===== */
+.grain::after {
+  content: ""; position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  opacity: 0.04; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* ===== display type ===== */
+.display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 360;
+  letter-spacing: -0.025em;
+  line-height: 0.9;
+}
+.display-italic { font-style: italic; font-variation-settings: "WONK" 1, "SOFT" 4; }
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 0.72rem; letter-spacing: 0.34em; text-transform: uppercase;
+  color: var(--color-clay-2);
+}
+
+/* ===== atmosphere: drifting gradient-mesh blobs (glass refracts these) ===== */
+.blob { position: absolute; border-radius: 999px; filter: blur(76px); mix-blend-mode: screen; will-change: transform; }
+.blob--a {
+  width: 50vw; height: 50vw; left: 42%; top: -10%;
+  background: radial-gradient(circle, rgb(var(--primary-soft) / 0.78), transparent 70%);
+  animation: floatA 22s ease-in-out infinite;
+}
+.blob--b {
+  width: 42vw; height: 42vw; left: 58%; top: 26%;
+  background: radial-gradient(circle, rgb(var(--primary) / 0.68), transparent 70%);
+  animation: floatB 27s ease-in-out infinite;
+}
+.blob--c {
+  width: 36vw; height: 36vw; left: 22%; top: 40%;
+  background: radial-gradient(circle, rgb(var(--accent) / 0.5), transparent 70%);
+  animation: floatC 31s ease-in-out infinite;
+}
+@keyframes floatA { 0%,100% { transform: translate(0,0) scale(1); } 33% { transform: translate(-14vw,9vh) scale(1.16); } 66% { transform: translate(9vw,-8vh) scale(0.92); } }
+@keyframes floatB { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(-17vw,12vh) scale(1.2); } }
+@keyframes floatC { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(14vw,-13vh) scale(0.86); } }
+
+/* flowing gradient panel + ambient breathing glow */
+@keyframes gradientFlow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+.gradient-flow { background-size: 220% 220%; animation: gradientFlow 20s ease-in-out infinite; }
+@keyframes glowPulse { 0%,100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.12); } }
+.glow-pulse { animation: glowPulse 11s ease-in-out infinite; }
+
+/* thin geometric line-art (huge arcs bleeding off-edge) */
+.arc { border: 1px solid var(--color-line-dark); border-radius: 999px; }
+.arc-light { border: 1px solid var(--color-line-light); border-radius: 999px; }
+
+/* ===== glass buttons ===== */
+.glass-btn {
+  border-radius: var(--radius-pill);
+  background: rgba(243,238,227,0.10);
+  backdrop-filter: blur(26px) saturate(185%);
+  -webkit-backdrop-filter: blur(26px) saturate(185%);
+  border: 1px solid rgba(243,238,227,0.22);
+  color: var(--color-bone);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), inset 0 -8px 18px rgba(0,0,0,0.10), 0 10px 30px -14px rgba(0,0,0,0.5);
+  transition: background .3s ease, border-color .3s ease, color .3s ease;
+}
+.glass-btn:hover { background: rgba(243,238,227,0.17); border-color: rgba(243,238,227,0.42); }
+/* primary — brand-tinted frosted glass */
+.glass-btn--clay {
+  background: rgb(var(--primary) / 0.30);
+  border-color: rgb(var(--primary-soft) / 0.5);
+  color: var(--color-bone);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.25), 0 12px 32px -14px rgb(var(--primary) / 0.6);
+}
+.glass-btn--clay:hover { background: rgb(var(--primary-soft) / 0.42); border-color: rgb(var(--accent) / 0.7); }
+/* for LIGHT backgrounds — light frost, dark text */
+.glass-btn--ink {
+  background: rgba(255,255,255,0.16);
+  backdrop-filter: blur(26px) saturate(170%);
+  -webkit-backdrop-filter: blur(26px) saturate(170%);
+  border-color: rgba(28,24,19,0.16);
+  color: var(--color-slate);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.55), 0 10px 30px -16px rgba(28,24,19,0.4);
+}
+.glass-btn--ink:hover { background: rgba(255,255,255,0.28); border-color: rgba(28,24,19,0.3); }
+
+/* frosted hero card (works on a dark page) */
+.glass-card {
+  background: linear-gradient(150deg, rgba(243,238,227,0.08), rgba(243,238,227,0.02));
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border: 1px solid rgba(243,238,227,0.12);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.18), 0 40px 80px -40px rgba(0,0,0,0.85);
+}
+
+/* =====================================================================
+   APP SURFACE TOKENS — dark default + light theme
+   Components reference ONLY these semantics, never raw colors.
+   ===================================================================== */
+[data-app] {
+  --app-bg: #15110D;
+  --app-panel: #1E1813;
+  --app-panel-2: #241D16;
+  --app-elev: #2A2219;
+  --app-border: rgba(243,238,227,0.10);
+  --app-border-strong: rgba(243,238,227,0.20);
+  --app-text: #F0ECE1;
+  --app-text-soft: #A79C8C;
+  --app-text-faint: #6B6052;
+  --app-hover: rgba(243,238,227,0.055);
+  --app-shadow: 0 30px 80px -40px rgba(0,0,0,0.7);
+  --aura: 0.32;   /* ambient gradient strength behind glass (dark = rich) */
+  color-scheme: dark;
+}
+[data-app][data-theme="light"] {
+  --app-bg: #EFEADE;
+  --app-panel: #FBF8F1;
+  --app-panel-2: #F4EFE4;
+  --app-elev: #FFFFFF;
+  --app-border: rgba(28,24,19,0.12);
+  --app-border-strong: rgba(28,24,19,0.22);
+  --app-text: #211C16;
+  --app-text-soft: #6B6052;
+  --app-text-faint: #9A8E7C;
+  --app-hover: rgba(28,24,19,0.045);
+  --app-shadow: 0 24px 60px -38px rgba(76,52,34,0.45);
+  --aura: 0.28;   /* enough color for the frost to read as pastel */
+  color-scheme: light;
+}
+/* cross-fade theme toggle instead of a hard snap */
+[data-app] * { transition: background-color .25s ease, border-color .25s ease, color .2s ease; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* =====================================================================
+   LIQUID GLASS — heavy frost + vibrancy + specular edge.
+   Strong blur frosts the background; saturate restores color the blur
+   greys out; the inset top highlight + soft shadow give lit depth.
+   ===================================================================== */
+.glass-surface {
+  background: color-mix(in srgb, var(--app-panel) 42%, transparent);
+  -webkit-backdrop-filter: blur(34px) saturate(190%);
+  backdrop-filter: blur(34px) saturate(190%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.15), inset 0 0 0 1px rgb(255 255 255 / 0.03);
+}
+.glass-surface-soft {
+  background: color-mix(in srgb, var(--app-panel) 46%, transparent);
+  -webkit-backdrop-filter: blur(44px) saturate(200%);
+  backdrop-filter: blur(44px) saturate(200%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.25), inset 0 -10px 28px rgb(0 0 0 / 0.06), 0 20px 55px -20px rgb(0 0 0 / 0.55);
+}
+/* light theme: THINNER panel + MORE saturate so pastel aura reads through */
+[data-app][data-theme="light"] .glass-surface {
+  background: color-mix(in srgb, var(--app-panel) 30%, transparent);
+  -webkit-backdrop-filter: blur(30px) saturate(210%);
+  backdrop-filter: blur(30px) saturate(210%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.55), inset 0 0 0 1px rgb(255 255 255 / 0.25);
+}
+[data-app][data-theme="light"] .glass-surface-soft {
+  background: color-mix(in srgb, var(--app-panel) 34%, transparent);
+  -webkit-backdrop-filter: blur(40px) saturate(220%);
+  backdrop-filter: blur(40px) saturate(220%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6), 0 20px 55px -20px rgba(76,52,34,0.3);
+}
+
+/* near-opaque material for dropdowns/popovers over busy content (text stays readable) */
+.glass-menu {
+  background: color-mix(in srgb, var(--app-panel) 94%, transparent);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14), var(--app-shadow);
+}
+
+/* tiles/chips/items INSIDE a glass panel — NO backdrop-filter (nesting breaks it).
+   Parent already frosts the background; these are translucent tint + sheen. */
+.glass-inset {
+  background: color-mix(in srgb, var(--app-elev) 60%, transparent);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.10);
+}
+/* liquid-glass hover for tabs/buttons/items — a frosted tile lifts in (not a color swap) */
+.glass-inset-hover { transition: background-color .2s ease, box-shadow .2s ease; }
+.glass-inset-hover:hover {
+  background: color-mix(in srgb, var(--app-elev) 70%, transparent);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18), inset 0 0 0 1px rgb(255 255 255 / 0.05);
+}
+.glass-edge { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12); }
