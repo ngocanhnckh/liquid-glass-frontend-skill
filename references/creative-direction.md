@@ -19,6 +19,8 @@ These patterns scream "template" — avoid them as defaults:
 | One weight, one size of sans | A characterful display face doing real work: italic accents, variable-weight, optical sizing, mixed sizes in one headline |
 | Fade-in-up on everything, identically | A *choreographed* sequence — masked text reveals, clip-path wipes, staggered columns, scroll-scrubbed motion |
 | Section / section / section, all same rhythm | Chapters with distinct treatments — a dark editorial block, then a full-bleed color-flip panel, then a quiet spacious one |
+| Sibling cards/tiles that all share one identical shape | Vary roles: a bento (tall lead + wide + compact) or a staggered cluster (different heights/sizes, dropped to different offsets, numbered `01`/`02`/`03`). See `layout-composition.md`. |
+| "Fixing" identical cards by making every section a uniform *linear list* instead | That just trades one monotony for another. Vary the **pattern** between sections; make adjacent blocks contrast (linear timeline next to varied bento, not two identical slabs). |
 
 ## Type as the hero
 

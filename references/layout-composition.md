@@ -2,6 +2,26 @@
 
 Generic frontends default to centered single columns and rows of equal cards. Distinctive ones use asymmetry, overlap, and deliberate negative space. Intentionality is the whole game.
 
+## Vary the treatment — between items AND between sections
+
+The single most important rule, and the one most easily missed. **Never repeat one uniform layout treatment.** It reads as generic/AI-made instantly. This bites at two levels:
+
+1. **Between sibling items.** Cards/tiles in a section must NOT all share one identical shape. Vary size, proportion, content density, and vertical offset:
+   - A **bento**: one tall lead tile + one wide tile + two compact tiles, each with different copy density (lead has full description; compact shows title + label only).
+   - A **staggered cluster** (the classic editorial "team/gallery" move): items at different heights and sizes, dropped to different vertical offsets, with small numbered captions (`01` / `02` / `03`). One photo large, the next medium and pushed down, the next tall and pushed down further.
+   ```tsx
+   // bento: sizes vary via col-span / row-span, not a uniform repeat
+   <div className="grid gap-4 lg:grid-cols-3 lg:grid-rows-[auto_auto]">
+     <Tile variant="lead"  className="lg:row-span-2" />  {/* tall, full copy + glow */}
+     <Tile variant="wide"  className="lg:col-span-2" />  {/* broad, with copy        */}
+     <Tile variant="small" />                            {/* compact: title + label  */}
+     <Tile variant="small" />
+   </div>
+   ```
+2. **Between sections.** Don't "fix" identical card grids by making every section a *different but internally uniform* pattern. The common trap: trading "identical card grids" for "identical ruled-row lists" — now every section is a linear list and the page feels monotonous a level deeper. Give each section its own compositional pattern (index ledger / bento / dominant figure / spec-sheet / staggered cluster), and when two blocks sit **adjacent**, make them deliberately contrast (e.g. a linear timeline next to a varied bento — never two near-identical slabs stacked).
+
+Uniform repetition = the tell. Varied size + intentional asymmetry = reads as designed. When a section has 2+ peer items, ask: "do these share one shape?" If yes, differentiate their roles before shipping.
+
 ## Asymmetric two-column band (the workhorse hero)
 
 Instead of one centered headline, split into an unequal grid: a short bold stacked headline on one side, copy + CTA aligned to the *bottom* of the other side. The vertical misalignment is what makes it feel designed.
